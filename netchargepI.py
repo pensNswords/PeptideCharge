@@ -26,7 +26,7 @@ the pH which the net-charge is 0 can be determined to be the theoretical pI of t
 def charge_plot(charge_data1, method=''):
     fig = plt.figure(figsize = (5,5))
 
-    fig.suptitle('pH Vs Charge of Protein - ' + str(method))
+    fig.suptitle('pH vs Charge of Protein - ' + str(method))
     ax1 = fig.add_subplot(1, 1,1)
 
     plt.axhline(y=0, color = 'black', alpha = 0.3, linestyle = '--')
@@ -37,14 +37,14 @@ def charge_plot(charge_data1, method=''):
 
     x1 = charge_data1['pH'].min()
     y1 = charge_data1.loc[charge_data1['pH'] == charge_data1['pH'].min(), 'Net-Charge'].iloc[0]
-    plt.text(x1, y1+0.2, round(y1, 2), fontdict=dict(color='red',size=7))
+    plt.text(x1, y1+0.05, round(y1, 2), fontdict=dict(color='red',size=7))
 
     x2 = charge_data1['pH'].max()
     y2 = charge_data1.loc[charge_data1['pH'] == charge_data1['pH'].max(), 'Net-Charge'].iloc[0]
-    plt.text(x2-0.5, y2+0.2, round(y2, 2), fontdict=dict(color='red',size=7))
+    plt.text(x2-0.5, y2+0.05, round(y2, 2), fontdict=dict(color='red',size=7))
 
     ch_7_1 = charge_data1.loc[(charge_data1['pH']-7).abs().argsort()[:1],"Net-Charge"].iloc[0]
-    plt.text(7,ch_7_1+0.6 , round(ch_7_1,2), fontdict=dict(color='red',size=7))
+    plt.text(7,ch_7_1+0.05 , round(ch_7_1,2), fontdict=dict(color='red',size=7))
 
     plt.tight_layout()
     plt.show()
