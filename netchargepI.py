@@ -24,7 +24,7 @@ the pH which the net-charge is 0 can be determined to be the theoretical pI of t
 '''
 
 def charge_plot(charge_data1, method=''):
-    fig = plt.figure(figsize = (10,5))
+    fig = plt.figure(figsize = (5,5))
 
     fig.suptitle('pH Vs Charge of Protein - ' + str(method))
     ax1 = fig.add_subplot(1, 1,1)
@@ -61,11 +61,9 @@ def pH_sim():
             ph1 = p + t/2
             if ph1 not in ini:
                 ls.append(ph1)
-                print(ph1)
             ph2 = p - t/2
             if ph2 not in ini:
                 ls.append(ph2)
-                print(ph2)
         ini = ini + list(set(ls) - set(ini))
         t = t/2
         i = i+1
@@ -73,19 +71,26 @@ def pH_sim():
     return(ini)
 
 
-def ncpI(aa, pI_plot = True):
-    ph_list = pH_sim()
-    nc = []
-    for ph in ph_list:
-        sum_chg = NetCharge.chain_net_charge(aa, ph)
-        nc.append(sum_chg)
+def ncpI(aa_chain, pI_plot = True):
+    try:
+        if type(aa_chain) not in [str, list]:
+            raise ValueError("The input needs to be in the form of string of amino acids or a lits of Amino Acid sequence")
+
+        ph_list = pH_sim()
+        nc = []
+        for ph in ph_list:
+            sum_chg = NetCharge.chain_net_charge(aa_chain, ph)
+            nc.append(sum_chg)
+        
+        df = pd.DataFrame({"pH": ph_list, "Net-Charge":nc})
+
+        theo_pI = np.mean(df.iloc[(df['Net-Charge']-0).abs().argsort()[:2]]['pH'])
+
+        if pI_plot == True:
+            charge_plot(charge_data1=df, method='Iterative Net-Charge Method')
+        return (theo_pI)
     
-    df = pd.DataFrame(ph_list, nc, columns = ["pH", "Net-Charge"])
-
-    theo_pI = np.mean(df.iloc[(df['Net-Charge']-0).abs().argsort()[:2]]['pH'])
-
-    if pI_plot == True:
-        charge_plot(charge_data1=df, method='Iterative Net-Charge Method')
-    return (theo_pI)
+    except Exception as e:
+        print("The Error is: ", e)
 
     
