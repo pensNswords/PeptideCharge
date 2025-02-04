@@ -5,7 +5,7 @@ import pandas as pd
 import NetCharge
 
 '''
-The isoelectic point (pI) of any peptide is the pH at which the netc harge of the protein is 0.
+The isoelectic point (pI) of any peptide is the pH at which the net-charge of the protein is 0.
 
 As we know each amino acid has a charge associated with it and theoretically,
 summation of the individual charges of the amino acids should equal to the charge of the peptide. 
